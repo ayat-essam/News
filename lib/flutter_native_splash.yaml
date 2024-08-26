@@ -1,0 +1,11 @@
+flutter_native_splash:
+
+  color: "#ffffff"
+  #background_image: "assets/images/background.png"
+  image: assets/image/splashScreen.png
+
+  #branding: assets/dart.png
+
+
+  #branding_mode: bottom
+

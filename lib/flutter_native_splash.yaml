@@ -1,11 +1,10 @@
 flutter_native_splash:
 
-  color: "#ffffff"
-  #background_image: "assets/images/background.png"
+  background_image: assets/image/background.png
   image: assets/image/splashScreen.png
 
-  #branding: assets/dart.png
-
-
-  #branding_mode: bottom
-
+  #color: "#FFFFFF"
+  android: true
+  ios: true
+  android_gravity: center
+  ios_content_mode: center

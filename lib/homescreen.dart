@@ -1,21 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:news/app_theme.dart';
+import 'package:news/cat_details.dart';
 import 'package:news/cat_grid.dart';
-class HomeScreen extends StatelessWidget {
+import 'package:news/cat_model.dart';
+import 'package:news/drawer.dart';
+import 'package:news/setting.dart';
+
+class HomeScreen extends StatefulWidget {
+
 static const String routeName = '/';
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: appTheme.white,
         image: (DecorationImage(image: AssetImage('assets/image/background.png')))
       ),
       child: Scaffold(
+        drawer:  drawer(
+            onItemSelection: onDrawerItemSelected ,),
       appBar: AppBar(centerTitle: true,
-        title: Text('News App')
+        title: const Text('News App')
       ),
-        body: categorygrid(),
+        body: selectedCategory != null ? CategoryDetails(selectedCategory!.id,)
+            : selectedDrawerItem == DrawerItem.Categories?
+        categorygrid(onCategorySelected: onCategorySelected) : const Setting(),
       ),
     );
   }
+  DrawerItem selectedDrawerItem = DrawerItem.Categories;
+  CategoryModel? selectedCategory ;
+  void onDrawerItemSelected (DrawerItem drawerItem){
+    selectedDrawerItem = drawerItem;
+    selectedCategory = null;
+    setState(() {
+    });
+    Navigator.of(context).pop();
+
+  }
+  void onCategorySelected (CategoryModel categoryModel){
+    selectedCategory = categoryModel;
+    setState(() {});
+  }
 }
+

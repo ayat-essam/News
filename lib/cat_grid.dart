@@ -5,25 +5,37 @@ import 'package:news/cat_model.dart';
 
 class categorygrid extends StatelessWidget {
 
+  final void Function(CategoryModel) onCategorySelected;
+  categorygrid({
+    super.key,
+    required this.onCategorySelected
+});
+
   @override
   Widget build(BuildContext context) {
     List<CategoryModel> categories = [
-      CategoryModel(name: 'sports',
+      CategoryModel(id: 'sports',
+          name: 'sports',
           imageName: 'ball.png',
           color: Color(0xffC91C22)),
-      CategoryModel(name: 'politics',
+      CategoryModel(id: 'politics',
+          name: 'politics',
           imageName: 'Politics.png',
           color: Color(0xff003E90)),
-      CategoryModel(name: 'Health',
+      CategoryModel(id: 'Health',
+          name: 'Health',
           imageName: 'health.png',
           color: Color(0xffED1E79)),
-      CategoryModel(name: 'bussines',
+      CategoryModel(id: 'busenuis',
+          name: 'bussines',
           imageName: 'bussines.png',
           color: Color(0xffCF7E48)),
-      CategoryModel(name: 'Environment',
+      CategoryModel(id: 'Enviromemt',
+          name: 'Environment',
           imageName: 'environment.png',
           color: Color(0xff4882CF)),
-      CategoryModel(name: 'Science',
+      CategoryModel(id: 'Science',
+          name: 'Science',
           imageName: 'science.png',
           color: Color(0xffF2D352)),
 
@@ -48,10 +60,15 @@ class categorygrid extends StatelessWidget {
             mainAxisSpacing: 24,
             crossAxisSpacing: 24),
 
-            itemBuilder: (_, index) => CategoryItem(index: index,
-            categoryModel: categories[index],
-            )
-              ,
+            itemBuilder: (_, index) {
+              final categoryModel = categories[index];
+              return InkWell(
+                onTap: () => onCategorySelected(categoryModel),
+                child: CategoryItem(index: index,
+                  categoryModel: categories[index],
+                ),
+              );
+            } ,
             itemCount: categories.length,),
           )
         ],

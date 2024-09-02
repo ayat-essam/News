@@ -18,8 +18,8 @@ class articleImage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
         Image.network(
-        article.url ??'',
-          // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWz9tftw9qculFH1gxieWkxL6rbRk_hrXTSg&s',
+        article.url ??
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWz9tftw9qculFH1gxieWkxL6rbRk_hrXTSg&s',
           fit: BoxFit.fill,
           height: MediaQuery.of(context).size.height * 0.25,
           width: double.infinity,

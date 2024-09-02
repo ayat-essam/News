@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news/api_manger.dart';
 import 'package:news/news/articale.dart';
-import '../widget/loading_indicator.dart';
 import 'news_item.dart';
 
 class NewsList extends StatefulWidget {
@@ -12,41 +11,66 @@ class NewsList extends StatefulWidget {
   @override
   _NewsListState createState() => _NewsListState();
 }
-
 class _NewsListState extends State<NewsList> {
-  TextEditingController _searchController = TextEditingController();
-  List<dynamic> _newsList = [];
-  List<dynamic> _filteredNewsList = [];
+
+  TextEditingController searchController = TextEditingController();
+  List newsList = [];
+  List filteredNewsList = [];
+  bool isLoading = true;
+  int currentPage = 1;
+  bool isLoadingMore = false;
+  final ScrollController scrollController = ScrollController();
+
 
   @override
   void initState() {
     super.initState();
-    _fetchNews();
+    searchAboutNews();
+    scrollController.addListener(scrollListener);
+  }
+  @override
+  void dispose(){
+    super.dispose();
+    scrollController.dispose();
   }
 
-  void _fetchNews() async {
+  void searchAboutNews({int page = 1}) async {
     final response = await apiManger.getNews(widget.newsId);
     if (response.status == 'ok') {
       setState(() {
-        _newsList = response.articles;
-        _filteredNewsList = _newsList;
+        newsList.addAll(response.articles);
+        filteredNewsList = newsList;
+        isLoading = false;
+        isLoadingMore = false;
       });
     } else {
       setState(() {
-        _newsList = [];
-        _filteredNewsList = [];
+        newsList = [];
+        filteredNewsList = [];
+        isLoading = false;
       });
     }
   }
 
-  void _filterNews(String query) {
+  void filterNews(String query) {
     setState(() {
-      _filteredNewsList = _newsList
+      filteredNewsList = newsList
           .where((article) =>
       article.title.toLowerCase().contains(query.toLowerCase()) ||
           article.description.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
+  }
+  void scrollListener(){
+    if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+      if(isLoadingMore){
+        setState(() {
+          isLoadingMore = true;
+          currentPage++;
+        });
+        searchAboutNews(page: currentPage);
+      }
+    }
   }
 
   @override
@@ -54,12 +78,13 @@ class _NewsListState extends State<NewsList> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          controller: _searchController,
-          decoration: InputDecoration(
+          controller: searchController,
+          decoration: const InputDecoration(
+
             hintText: 'Search Articles',
             border: InputBorder.none,
           ),
-          onChanged: _filterNews,
+          onChanged: filterNews,
         ),
         actions: [
           IconButton(
@@ -71,20 +96,20 @@ class _NewsListState extends State<NewsList> {
           ),
         ],
       ),
-      body: _filteredNewsList.isEmpty
-          ? _newsList.isEmpty
-          ? const loadingIndicator()
-          : const Center(child: Text('No articles match your search.'))
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : filteredNewsList.isEmpty
+          ? const Center(child: Text('No articles match your search.'))
           : ListView.builder(
-        itemCount: _filteredNewsList.length,
+        itemCount: filteredNewsList.length,
         itemBuilder: (context, index) {
-          final article = _filteredNewsList[index];
+          final article = filteredNewsList[index];
           return GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => articleImage( article),
+                  builder: (context) => articleImage(article),
                 ),
               );
             },
@@ -94,10 +119,6 @@ class _NewsListState extends State<NewsList> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 }
+
+

@@ -30,7 +30,7 @@ class _SourceTabState extends State<sourceTab> {
             onTap: (index) => setState(() => selectedIndex = index),
             tabs: widget.sources.map(
                   (source) => TabItem(
-                    sourse: source.name ?? '',
+                    source: source.name ?? '',
                 isSelected: source == widget.sources[selectedIndex],
               ),
             ).toList(),

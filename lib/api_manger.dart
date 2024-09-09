@@ -9,7 +9,7 @@ class apiManger{
   static Future <SourcesResponse> getSources (String catId) async{
     final uri = Uri.https(
         ApiConst.baseUrl,
-    ApiConst.sourseEndpoint,{
+    ApiConst.sourcesEndpoint,{
       'apiKey': ApiConst.apiKey,
           'category': catId
         });
@@ -19,7 +19,7 @@ class apiManger{
   }
   static Future<NewsResponse> getNews (String newsId) async{
     final uri = Uri.https(ApiConst.baseUrl,
-        ApiConst.sourseEndpoint,{
+        ApiConst.newsEndpoint,{
           'apiKey': ApiConst.apiKey,
           'sources': newsId
         });

@@ -3,15 +3,15 @@ import 'package:news/api_manger.dart';
 import 'package:news/news/articale.dart';
 import 'news_item.dart';
 
-class NewsList extends StatefulWidget {
-  const NewsList(this.newsId, {super.key});
+class NewsListArticle extends StatefulWidget {
+  const NewsListArticle(this.newsId, {super.key});
 
   final String newsId;
 
   @override
   _NewsListState createState() => _NewsListState();
 }
-class _NewsListState extends State<NewsList> {
+class _NewsListState extends State<NewsListArticle> {
 
   TextEditingController searchController = TextEditingController();
   List newsList = [];

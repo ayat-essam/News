@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:news/api_constant.dart';
-import 'models/NewsResponse.dart';
-import 'models/SourcesResponse.dart';
+import 'sources/data/model/NewsResponse.dart';
+import 'sources/data/model/SourcesResponse.dart';
 
 class apiManger{
 

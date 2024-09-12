@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:news/news/news_list.dart';
-import 'package:news/tabs/tab_item.dart';
+import 'package:news/news/news_list_article.dart';
+import 'package:news/sources/view/widget/news_list.dart';
+import 'package:news/sources/view/widget/tab_item.dart';
 
-import '../models/SourcesResponse.dart';
+import '../../data/model/SourcesResponse.dart';
 
 class sourceTab extends StatefulWidget {
   const sourceTab(this.sources, {super.key});
@@ -37,7 +38,7 @@ class _SourceTabState extends State<sourceTab> {
           ),
         ),
         Expanded(
-          child: NewsList(widget.sources [selectedIndex].id ??  ''),
+          child: NewsListArticle(widget.sources [selectedIndex].id ??  ''),
         ),
       ],
     );

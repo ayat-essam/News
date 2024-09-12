@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news/app_theme.dart';
-import 'package:news/homescreen.dart';
+import 'package:news/home/view/screen/homescreen.dart';
 import 'package:news/news/articale.dart';
 
 void main() {

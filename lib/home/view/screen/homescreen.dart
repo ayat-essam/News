@@ -3,8 +3,8 @@ import 'package:news/app_theme.dart';
 import 'package:news/cat_details.dart';
 import 'package:news/cat_grid.dart';
 import 'package:news/cat_model.dart';
-import 'package:news/drawer.dart';
-import 'package:news/setting.dart';
+import 'package:news/home/view/widget/drawer.dart';
+import 'package:news/setting/view/widget/setting.dart';
 
 class HomeScreen extends StatefulWidget {
 

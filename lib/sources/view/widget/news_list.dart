@@ -4,16 +4,16 @@ import 'package:news/sources/view_model/news_view_model.dart';
 import 'package:news/widget/error_indicator.dart';
 import 'package:news/widget/loading_indicator.dart';
 import 'package:provider/provider.dart';
-class newsList extends StatefulWidget {
-  const newsList(this.newsId,
+class NewsList extends StatefulWidget {
+  const NewsList(this.newsId,
       {super.key});
 
   final String newsId ;
   @override
-  State<newsList> createState() => _newsListState();
+  State<NewsList> createState() => _newsListState();
 }
 
-class _newsListState extends State<newsList> {
+class _newsListState extends State<NewsList> {
    final viewModel = newsViewModel();
 
   @override

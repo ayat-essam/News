@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/news/news_item.dart';
+import 'package:news/sources/view_model/news_state.dart';
 import 'package:news/sources/view_model/news_view_model.dart';
 import 'package:news/widget/error_indicator.dart';
 import 'package:news/widget/loading_indicator.dart';
-import 'package:provider/provider.dart';
+
 class NewsList extends StatefulWidget {
   const NewsList(this.newsId,
       {super.key});
@@ -14,22 +16,26 @@ class NewsList extends StatefulWidget {
 }
 
 class _newsListState extends State<NewsList> {
-   final viewModel = newsViewModel();
+  final viewModel = NewsViewModel();
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => viewModel..getNews(widget.newsId),
-    child: Consumer<newsViewModel>(builder: (_, viewModel, __) {
-      if (viewModel.isLoading){
-        return const loadingIndicator();
-      }else if(viewModel.errorMassage != null){
-        return errorIndicator(viewModel.errorMassage!);
-      }else{
-        return ListView.builder(
-            itemBuilder: (_, index) =>newsItem(viewModel.ArticleList[index]) ,
-        itemCount: viewModel.ArticleList.length,);
-      }
-    }),);
+    return BlocProvider(
+      create: (context) => viewModel,
+      child: BlocBuilder<NewsViewModel,NewsState>(
+          builder: (context , state) {
+            if (state is GetNewsLoading){
+              return const loadingIndicator();
+            }else if(state is GetNewsError){
+              return errorIndicator(state.message);
+            }else if(state is GetNewsSucces){
+            return ListView.builder(
+            itemBuilder: (_, index) =>newsItem(state.articleList[index]) ,
+            itemCount: state.articleList.length,);
+            }
+            else{
+            return const SizedBox();
+            }
+          }),);
   }
 }

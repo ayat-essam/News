@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-    import 'package:news/api_manger.dart';
-    import 'package:news/sources/view/widget/sources_tab.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news/sources/view/widget/sources_tab.dart';
+import 'package:news/sources/view_model/sources_state.dart';
 import 'package:news/sources/view_model/sources_view_model.dart';
-    import 'package:news/widget/error_indicator.dart';
-    import 'package:news/widget/loading_indicator.dart';
+import 'package:news/widget/error_indicator.dart';
 import 'package:news/widget/loading_indicator.dart';
-import 'package:provider/provider.dart';
+
 
     class CategoryDetails extends StatefulWidget {
 
@@ -30,15 +30,18 @@ import 'package:provider/provider.dart';
   }
     @override
     Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (_) => viewModel ,
-   child: Consumer<sourceViewModel>(
-     builder: (_, viewModel, __) {
-      if(viewModel.isLoasding){
+    return BlocProvider(
+      create: (_) => viewModel ,
+   child: BlocBuilder<sourceViewModel, SourcesState>(
+     builder: (context, state) {
+      if(state is GetSourceLoading){
       return const loadingIndicator();
-      }else if (viewModel.errorMassage != null){
-      return errorIndicator(viewModel.errorMassage!);
-      }else{
-       return sourceTab(viewModel.sources);
+      }else if (state is GetSourceError){
+      return errorIndicator(state.message);
+      }else if (state is GetSourceSucces){
+       return sourceTab(state.sources);
+      }else {
+        return const SizedBox();
       }
       }
    ),
@@ -49,21 +52,6 @@ import 'package:provider/provider.dart';
     }
 
 
-
-
-
-
-    // future: apiManger.getSources(widget.catId),
-    // builder: (context, snapshot) {
-    // if(snapshot.connectionState == ConnectionState.waiting){
-    // return const loadingIndicator();
-    // }else if (snapshot.hasError || snapshot.data?.status != 'ok' ){
-    // return const errorIndicator();
-    // }else{
-    // final sources = snapshot.data?.sources ??[];
-    // return sourceTab(sources);
-    // }
-    // }
 
 
 

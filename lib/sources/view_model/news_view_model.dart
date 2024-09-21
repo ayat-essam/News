@@ -1,30 +1,25 @@
-import 'package:flutter/cupertino.dart';
-import 'package:news/sources/data/data_source/news_api_data_source.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/sources/data/repo/news%20repo.dart';
 import 'package:news/sources/data/service_locator.dart';
-import 'package:news/sources/view/widget/news_list.dart';
+import 'package:news/sources/view_model/news_state.dart';
 
-import '../data/model/NewsResponse.dart';
 
-class newsViewModel with ChangeNotifier{
-  final NewsRepo newsRepo ;
+class NewsViewModel extends Cubit<NewsState> {
+  late final NewsRepo newsRepo ;
 
-  newsViewModel():newsRepo = NewsRepo((ServiceLocator.newsDataSource));
- List<Article> ArticleList=[];
- bool isLoading = false;
- String? errorMassage;
+  NewsViewModel() : super(NewsRepo as NewsState) {
+    newsRepo = NewsRepo(ServiceLocator.newsDataSource);
+  }
 
- Future<void> getNews(String newsId) async{
-   isLoading = true;
-   notifyListeners();
-   try{
-      ArticleList = await newsRepo.getNews(newsId);
+  Future<void> getNews(String newsId) async {
+    emit(GetNewsLoading());
+    try {
+      final articleList = await newsRepo.getNews(newsId);
+      emit(GetNewsSucces(articleList));
+    }
+    catch (error) {
+      emit(GetNewsError(error.toString()));
  }
- catch(error) {
- errorMassage = error.toString();
- }
- notifyListeners();
- isLoading = false;
+  }
 
-   }
- }
+}
